@@ -22,7 +22,7 @@ add_test(
         NAME integration.snapshot.swordsman_deterministic
         COMMAND ${CMAKE_COMMAND}
         -DEXECUTABLE=$<TARGET_FILE:sw_battle_test>
-        -DSCENARIO=${CMAKE_SOURCE_DIR}/tests/integration/scenarios/swordsman_deterministic.txt
+        -DSCENARIO=${CMAKE_SOURCE_DIR}/tests/integration/scenarios/scenario_1_determenistic.txt
         -DEXPECTED=${CMAKE_SOURCE_DIR}/tests/integration/expected/swordsman_deterministic.log
         -P ${CMAKE_SOURCE_DIR}/tests/integration/cmake/AssertSnapshot.cmake
 )
