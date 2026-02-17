@@ -1,0 +1,22 @@
+name: C++ CI (Windows)
+
+on:
+  pull_request:
+    branches: [ main, master ]  # Run when those branches change
+
+jobs:
+  build_and_test:
+    runs-on: windows-latest  # Use freshest Win-server
+
+    steps:
+    - uses: actions/checkout@v4 # Checkout
+
+    - name: Configure CMake
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+    - name: Build
+      run: cmake --build build --config Release
+
+    - name: Run Tests
+      working-directory: build
+      run: ctest -C Release --output-on-failure # Run CTest
