@@ -18,11 +18,13 @@ set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT sw_battle_test)
 
 enable_testing()
 
-add_test(
-        NAME integration.snapshot.swordsman_deterministic
-        COMMAND ${CMAKE_COMMAND}
-        -DEXECUTABLE=$<TARGET_FILE:sw_battle_test>
-        -DSCENARIO=${CMAKE_SOURCE_DIR}/tests/integration/scenarios/scenario_1_determenistic.txt
-        -DEXPECTED=${CMAKE_SOURCE_DIR}/tests/integration/expected/swordsman_deterministic.log
-        -P ${CMAKE_SOURCE_DIR}/tests/integration/cmake/AssertSnapshot.cmake
-)
+foreach(scenario_index IN ITEMS 1 2 3 4)
+    add_test(
+            NAME integration.snapshot.scenario_${scenario_index}_determenistic
+            COMMAND ${CMAKE_COMMAND}
+            -DEXECUTABLE=$<TARGET_FILE:sw_battle_test>
+            -DSCENARIO=${CMAKE_SOURCE_DIR}/tests/integration/scenarios/scenario_${scenario_index}_determenistic.txt
+            -DEXPECTED=${CMAKE_SOURCE_DIR}/tests/integration/expected/scenario_${scenario_index}_determenistic.log
+            -P ${CMAKE_SOURCE_DIR}/tests/integration/cmake/AssertSnapshot.cmake
+    )
+endforeach()
