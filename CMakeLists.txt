@@ -15,3 +15,14 @@ set_target_properties(sw_battle_test PROPERTIES
 )
 
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT sw_battle_test)
+
+enable_testing()
+
+add_test(
+        NAME integration.snapshot.swordsman_deterministic
+        COMMAND ${CMAKE_COMMAND}
+        -DEXECUTABLE=$<TARGET_FILE:sw_battle_test>
+        -DSCENARIO=${CMAKE_SOURCE_DIR}/tests/integration/scenarios/swordsman_deterministic.txt
+        -DEXPECTED=${CMAKE_SOURCE_DIR}/tests/integration/expected/swordsman_deterministic.log
+        -P ${CMAKE_SOURCE_DIR}/tests/integration/cmake/AssertSnapshot.cmake
+)
