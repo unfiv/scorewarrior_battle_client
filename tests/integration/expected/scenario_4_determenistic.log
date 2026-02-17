@@ -1,0 +1,25 @@
+[0] MAP_CREATED width=10 height=10 
+[0] UNIT_SPAWNED unitId=1 unitType=swordsman x=5 y=1 
+[0] MARCH_STARTED unitId=1 x=5 y=1 targetX=5 targetY=8 
+[0] UNIT_SPAWNED unitId=3 unitType=swordsman x=8 y=4 
+[0] MARCH_STARTED unitId=3 x=8 y=4 targetX=1 targetY=4 
+[1] UNIT_MOVED unitId=1 x=5 y=2 
+[1] UNIT_MOVED unitId=3 x=7 y=4 
+[2] UNIT_MOVED unitId=1 x=5 y=3 
+[2] UNIT_MOVED unitId=3 x=6 y=4 
+[3] UNIT_ATTACKED attackerUnitId=1 targetUnitId=3 damage=2 targetHp=8 
+[3] UNIT_ATTACKED attackerUnitId=3 targetUnitId=1 damage=1 targetHp=4 
+[4] UNIT_ATTACKED attackerUnitId=1 targetUnitId=3 damage=2 targetHp=6 
+[4] UNIT_ATTACKED attackerUnitId=3 targetUnitId=1 damage=1 targetHp=3 
+[5] UNIT_ATTACKED attackerUnitId=1 targetUnitId=3 damage=2 targetHp=4 
+[5] UNIT_ATTACKED attackerUnitId=3 targetUnitId=1 damage=1 targetHp=2 
+[6] UNIT_ATTACKED attackerUnitId=1 targetUnitId=3 damage=2 targetHp=2 
+[6] UNIT_ATTACKED attackerUnitId=3 targetUnitId=1 damage=1 targetHp=1 
+[7] UNIT_ATTACKED attackerUnitId=1 targetUnitId=3 damage=2 targetHp=0 
+[7] UNIT_DIED unitId=3 
+[8] UNIT_MOVED unitId=1 x=5 y=4 
+[9] UNIT_MOVED unitId=1 x=5 y=5 
+[10] UNIT_MOVED unitId=1 x=5 y=6 
+[11] UNIT_MOVED unitId=1 x=5 y=7 
+[12] UNIT_MOVED unitId=1 x=5 y=8 
+[12] MARCH_ENDED unitId=1 x=5 y=8 
