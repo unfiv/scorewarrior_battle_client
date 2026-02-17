@@ -16,6 +16,19 @@ set_target_properties(sw_battle_test PROPERTIES
 
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT sw_battle_test)
 
+# Define assets dirs
+set(ASSETS_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/assets")
+set(ASSETS_TARGET_DIR "$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets")
+
+# Copy whole assets dir each build (with cleanup)
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E rm -rf "$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets"
+    COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${ASSETS_SOURCE_DIR}" "$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets"
+    COMMENT "Cleaning and copying assets to: $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets"
+)
+
+# Integration tests
 enable_testing()
 
 foreach(scenario_index IN ITEMS 1 2 3 4)
@@ -28,3 +41,4 @@ foreach(scenario_index IN ITEMS 1 2 3 4)
             -P ${CMAKE_SOURCE_DIR}/tests/integration/cmake/AssertSnapshot.cmake
     )
 endforeach()
+
