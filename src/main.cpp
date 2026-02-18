@@ -4,8 +4,7 @@
 #include "Core/IO/CommandParser.hpp"
 #include "Core/Commands/CreateMap.hpp"
 #include "Core/Events/MapCreated.hpp"
-
-#include "Features/UnitAssembler.hpp"
+#include "Core/CommandDispatcher.hpp"
 
 /*#include "IO/Commands/CreateMap.hpp"
 #include "IO/Commands/March.hpp"
@@ -38,16 +37,12 @@ int main(int argc, char** argv)
 	World world(events);
 	CommandParser parser;
 
-	parser.add<CreateMap>(
-			[&world](auto cmd)
-			{
-        world.map = {cmd.width, cmd.height};
-        world.getEvents().event(world.getTick(), MapCreated{cmd.width, cmd.height});
-    });
+	sw::core::CommandDispatcher dispatcher(world, parser);
 
-    parser.add<sw::io::SpawnSwordsman>([&world](auto cmd) {
+    /* parser.add<sw::io::SpawnSwordsman>([&world](auto cmd)
+											{
         sw::game::UnitAssembler::spawnSwordsman(world, cmd);
-    });
+    });*/
 
 	/* 
 	parser.add<io::CreateMap>([&world](auto command) { world.createMap(command.width, command.height); });
