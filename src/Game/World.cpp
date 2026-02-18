@@ -1,6 +1,6 @@
 #include "World.hpp"
 
-#include "IO/Events/MapCreated.hpp"
+/*#include "IO/Events/MapCreated.hpp"
 #include "IO/Events/MarchEnded.hpp"
 #include "IO/Events/MarchStarted.hpp"
 #include "IO/Events/UnitAbilityUsed.hpp"
@@ -8,11 +8,11 @@
 #include "IO/Events/UnitDied.hpp"
 #include "IO/Events/UnitMoved.hpp"
 #include "IO/Events/UnitSpawned.hpp"
-#include "IO/System/EventSystem.hpp"
+#include "IO/System/EventSystem.hpp"*/
 
 #include <algorithm>
 
-namespace sw::game
+/* namespace sw::game
 {
 	World::World(EventSystem& events) :
 			_map(0, 0),
@@ -136,4 +136,4 @@ namespace sw::game
 		}
 		return nullptr;
 	}
-}
+}*/

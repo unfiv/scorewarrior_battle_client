@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <ranges>
 
-namespace sw::game
+/* namespace sw::game
 {
 	Map::Map(const uint32_t width, const uint32_t height) :
 			_width(width),
@@ -76,4 +76,4 @@ namespace sw::game
 	{
 		_positionByUnitId.erase(unitId);
 	}
-}
+}*/

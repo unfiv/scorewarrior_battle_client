@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace sw::game
+/* namespace sw::game
 {
 	struct Position
 	{
@@ -33,4 +33,4 @@ namespace sw::game
 	{
 		return left.x != right.x || left.y != right.y;
 	}
-}
+}*/

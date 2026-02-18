@@ -5,7 +5,7 @@
 
 #include <vector>
 
-namespace sw
+/* namespace sw
 {
 	class EventSystem;
 
@@ -42,4 +42,4 @@ namespace sw::game
 		std::vector<Unit> _units;
 		uint32_t _tick;
 	};
-}
+}*/

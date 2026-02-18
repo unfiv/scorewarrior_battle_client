@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Details/CommandParserVisitor.hpp"
+#include "Visitors/CommandParserVisitor.hpp"
 
 #include <functional>
 #include <sstream>
 #include <string>
 
-namespace sw::io
+namespace sw::core::io
 {
 	class CommandParser
 	{

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Details/PrintFieldVisitor.hpp"
+#include "Visitors/PrintFieldVisitor.hpp"
 
 #include <iostream>
 
-namespace sw
+namespace sw::core::io
 {
 	class EventSystem
 	{

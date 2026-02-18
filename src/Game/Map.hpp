@@ -5,7 +5,7 @@
 #include <map>
 #include <vector>
 
-namespace sw::game
+/* namespace sw::game
 {
 	class Map
 	{
@@ -34,4 +34,4 @@ namespace sw::game
 
 		std::map<uint32_t, Position> _positionByUnitId;
 	};
-}
+}*/

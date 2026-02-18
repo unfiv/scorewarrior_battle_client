@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-namespace sw
+namespace sw::core::io
 {
 	class PrintFieldVisitor
 	{

@@ -4,7 +4,7 @@
 
 #include <optional>
 
-namespace sw::game
+/* namespace sw::game
 {
 	class Unit
 	{
@@ -84,4 +84,4 @@ namespace sw::game
 		uint32_t _rending{0};
 		bool _idle{true};
 	};
-}
+}*/
