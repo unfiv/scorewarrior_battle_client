@@ -42,7 +42,7 @@ namespace sw::core::commands
 }
 
 #define REGISTER_COMMAND(setupBlock) \
-    static bool _cmd_reg_##__LINE__ = []() { \
-        ::sw::core::commands::CommandRegistry::add(setupBlock); \
-        return true; \
-    }();
+static bool _cmd_reg_##__LINE__ = []() { \
+    ::sw::core::commands::CommandRegistry::add(setupBlock); \
+    return true; \
+}();

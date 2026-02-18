@@ -5,6 +5,7 @@
 #include "Core/Commands/CreateMap.hpp"
 #include "Core/Events/MapCreated.hpp"
 #include "Core/CommandDispatcher.hpp"
+#include "Core/Systems/Movement.hpp"
 
 /*#include "IO/Commands/CreateMap.hpp"
 #include "IO/Commands/March.hpp"
@@ -39,13 +40,10 @@ int main(int argc, char** argv)
 
 	sw::core::CommandDispatcher dispatcher(world, parser);
 
-    /* parser.add<sw::io::SpawnSwordsman>([&world](auto cmd)
-											{
-        sw::game::UnitAssembler::spawnSwordsman(world, cmd);
-    });*/
+	world.systems.push_back(sw::core::systems::Movement::update);
 
 	/* 
-	parser.add<io::CreateMap>([&world](auto command) { world.createMap(command.width, command.height); });
+	
 	parser.add<io::SpawnSwordsman>(
 			[&world](auto command)
 			{

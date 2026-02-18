@@ -1,9 +1,10 @@
 #pragma once
 
+#include <unordered_map>
+#include <functional>
+
 #include "Core/Position.hpp"
 #include "Core/Map.hpp"
-
-#include <unordered_map>
 
 namespace sw::core::io
 {
@@ -12,18 +13,24 @@ namespace sw::core::io
 
 namespace sw::core
 {
+    class World;
+    using SystemFunc = std::function<void(World&)>;
+
     class World
     {
     public:
         explicit World(io::EventSystem& events) : eventSystem(eventSystem) {}
 
         uint32_t getTick() const { return tick; }
-        void nextTick() { tick++; }
+        void nextTick();
         io::EventSystem& getEvents() { return eventSystem; }
 
         Map map{0, 0};
 
+        std::vector<SystemFunc> systems;
+
         std::unordered_map<uint32_t, Position> positions;
+        std::unordered_map<uint32_t, Position> targetPositions;
 
         bool isGameOver() const { return tick > 100; }
 
