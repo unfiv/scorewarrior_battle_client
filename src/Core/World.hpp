@@ -4,6 +4,7 @@
 #include <functional>
 #include <typeindex>
 #include <any>
+#include <variant>
 
 #include "Core/Position.hpp"
 #include "Core/Map.hpp"
@@ -17,7 +18,10 @@ namespace sw::core::io
 namespace sw::core
 {
     class World;
-    using SystemFunc = std::function<void(World&)>;
+
+    using UnitSystem = std::function<void(World&, uint32_t)>;
+    using GlobalSystem = std::function<void(World&)>;
+    using System = std::variant<UnitSystem, GlobalSystem>;
 
     class World
     {
@@ -30,7 +34,7 @@ namespace sw::core
 
         Map map{0, 0};
 
-        std::vector<SystemFunc> systems;
+        std::vector<System> systems;
 
         std::unordered_map<uint32_t, Position> positions;
         std::unordered_map<uint32_t, Position> targetPositions;

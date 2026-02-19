@@ -43,8 +43,8 @@ int main(int argc, char** argv)
 
 	sw::core::CommandDispatcher dispatcher(world, parser);
 
-	world.systems.push_back(sw::features::systems::Battle::update);
-	world.systems.push_back(sw::core::systems::Movement::update);
+	world.systems.push_back(sw::features::systems::Battle::processUnit);
+	world.systems.push_back(sw::core::systems::Movement::processUnit);
 	world.systems.push_back(sw::features::systems::Death::update);
 
 	/* 
