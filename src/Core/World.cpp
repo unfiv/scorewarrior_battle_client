@@ -10,10 +10,7 @@ namespace sw::core
 
 		restrictions.clear();
 
-        // Create a stable snapshot of unit IDs to ensure predictable processing order
-        std::vector<uint32_t> ids;
-        for (auto const& [id, _] : positions) ids.push_back(id);
-        std::sort(ids.begin(), ids.end());
+        auto ids = creationOrder;
 
         for (size_t i = 0; i < systems.size(); ++i)
         {

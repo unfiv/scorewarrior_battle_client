@@ -17,7 +17,8 @@ namespace sw::core
         static void spawn(World& world, uint32_t id, const std::string& type, Position pos, F&& setup)
         {
             world.positions[id] = pos;
-            setup(); 
+			world.creationOrder.push_back(id);
+            setup();
             world.getEvents().event(world.getTick(), events::UnitSpawned{id, type, pos.x, pos.y});
         }
 
@@ -27,6 +28,7 @@ namespace sw::core
             if (world.positions.erase(id))
             {
                 world.targetPositions.erase(id);
+                std::erase(world.creationOrder, id);
 				cleanup(id);
                 world.getEvents().event(world.getTick(), events::UnitDied{id});
             }

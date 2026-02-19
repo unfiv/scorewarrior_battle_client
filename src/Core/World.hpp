@@ -36,6 +36,7 @@ namespace sw::core
 
         std::vector<System> systems;
 
+        std::vector<uint32_t> creationOrder;
         std::unordered_map<uint32_t, Position> positions;
         std::unordered_map<uint32_t, Position> targetPositions;
         
