@@ -5,6 +5,7 @@
 
 #include "Core/Position.hpp"
 #include "Core/Map.hpp"
+#include "Core/Registry/RestrictionsRegistry.hpp"
 
 namespace sw::core::io
 {
@@ -31,6 +32,8 @@ namespace sw::core
 
         std::unordered_map<uint32_t, Position> positions;
         std::unordered_map<uint32_t, Position> targetPositions;
+        
+        registry::RestrictionsRegistry restrictions;
 
         bool isGameOver() const { return tick > 100; }
 

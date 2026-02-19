@@ -18,6 +18,13 @@ namespace sw::core::systems
             for (auto it = targets.begin(); it != targets.end(); )
             {
                 const uint32_t unitId = it->first;
+
+                if (!world.restrictions.isAllowed(unitId, registry::restrictions::MOVE))
+                {
+                    ++it;
+                    continue;
+                }
+
                 const Position targetPos = it->second;
                 const Position currentPos = positions[unitId];
 

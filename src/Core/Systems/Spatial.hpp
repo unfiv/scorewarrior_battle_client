@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Core/World.hpp"
 #include <cmath>
 #include <algorithm>
+
+#include "Core/World.hpp"
 
 namespace sw::core::systems
 {
