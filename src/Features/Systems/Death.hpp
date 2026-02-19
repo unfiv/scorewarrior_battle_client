@@ -12,29 +12,39 @@ namespace sw::features::systems
     class Death
     {
     public:
+        static void processUnit(core::World& world, uint32_t id)
+        {
+            auto& healthMap = world.getComponent<domain::Health>();
+            auto health = healthMap.find(id);
+			if (health != healthMap.end())
+            {
+                if (health->second.hp == 0)
+					destroy(world, id);
+            }
+        }
+
         static void update(core::World& world)
         {
             auto& healthMap = world.getComponent<domain::Health>();
             std::vector<uint32_t> toDelete;
-
-            // Identify all units that reached 0 HP during this tick
             for (auto const& [id, health] : healthMap)
             {
                 if (health.hp == 0)
-                {
                     toDelete.push_back(id);
-                }
             }
 
-            // Perform destruction and component cleanup
             for (uint32_t id : toDelete)
+                destroy(world, id);                
+        }
+
+	private:
+        static void destroy(core::World& world, uint32_t id)
+        {
+            core::UnitManager::destroy(world, id, [&](uint32_t targetId)
             {
-                core::UnitManager::destroy(world, id, [&](uint32_t targetId)
-                {
-                    world.getComponent<domain::Health>().erase(targetId);
-                    world.getComponent<domain::MeleeAttack>().erase(targetId);
-                });
-            }
+                world.getComponent<domain::Health>().erase(targetId);
+                world.getComponent<domain::MeleeAttack>().erase(targetId);
+            });
         }
     };
 }

@@ -10,13 +10,6 @@
 #include "Features/Systems/Battle.hpp"
 #include "Features/Systems/Death.hpp"
 
-/*#include "IO/Commands/CreateMap.hpp"
-#include "IO/Commands/March.hpp"
-#include "IO/Commands/SpawnHunter.hpp"
-#include "IO/Commands/SpawnSwordsman.hpp"
-#include "IO/System/CommandParser.hpp"
-#include "IO/System/EventSystem.hpp"*/
-
 #include <fstream>
 
 int main(int argc, char** argv)
@@ -43,29 +36,10 @@ int main(int argc, char** argv)
 
 	sw::core::CommandDispatcher dispatcher(world, parser);
 
+	world.systems.push_back(sw::features::systems::Death::processUnit);
 	world.systems.push_back(sw::features::systems::Battle::processUnit);
 	world.systems.push_back(sw::core::systems::Movement::processUnit);
 	world.systems.push_back(sw::features::systems::Death::update);
-
-	/* 
-	
-	parser.add<io::SpawnSwordsman>(
-			[&world](auto command)
-			{
-				world.spawnUnit(
-						command.unitId,
-						{command.x, command.y},
-						command.hp,
-						command.strength,
-						command.chance,
-						command.rending);
-			});
-	parser.add<io::SpawnHunter>(
-			[](auto command)
-			{
-				//TODO
-			});
-	parser.add<io::March>([&world](auto command) { world.march(command.unitId, {command.targetX, command.targetY}); });*/
 
 	parser.parse(file);
 
