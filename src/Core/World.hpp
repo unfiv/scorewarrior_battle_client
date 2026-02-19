@@ -2,6 +2,8 @@
 
 #include <unordered_map>
 #include <functional>
+#include <typeindex>
+#include <any>
 
 #include "Core/Position.hpp"
 #include "Core/Map.hpp"
@@ -35,10 +37,22 @@ namespace sw::core
         
         registry::RestrictionsRegistry restrictions;
 
+        template<typename T>
+        std::unordered_map<uint32_t, T>& getComponent()
+        {
+            auto& storage = components[std::type_index(typeid(T))];
+            if (!storage.has_value())
+            {
+                storage = std::make_any<std::unordered_map<uint32_t, T>>();
+            }
+            return std::any_cast<std::unordered_map<uint32_t, T>&>(storage);
+        }
+
         bool isGameOver() const { return tick > 100; }
 
     private:
         uint32_t tick{0};
         io::EventSystem& eventSystem;
+        std::unordered_map<std::type_index, std::any> components;
     };
 }
