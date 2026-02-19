@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string>
 
-namespace sw::io
+namespace sw::features::events
 {
 	struct UnitAbilityUsed
 	{

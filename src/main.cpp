@@ -7,6 +7,9 @@
 #include "Core/CommandDispatcher.hpp"
 #include "Core/Systems/Movement.hpp"
 
+#include "Features/Systems/Battle.hpp"
+#include "Features/Systems/Death.hpp"
+
 /*#include "IO/Commands/CreateMap.hpp"
 #include "IO/Commands/March.hpp"
 #include "IO/Commands/SpawnHunter.hpp"
@@ -40,7 +43,9 @@ int main(int argc, char** argv)
 
 	sw::core::CommandDispatcher dispatcher(world, parser);
 
+	world.systems.push_back(sw::features::systems::Battle::update);
 	world.systems.push_back(sw::core::systems::Movement::update);
+	world.systems.push_back(sw::features::systems::Death::update);
 
 	/* 
 	

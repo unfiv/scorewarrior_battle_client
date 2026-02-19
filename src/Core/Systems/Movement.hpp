@@ -27,8 +27,7 @@ namespace sw::core::systems
 
                 const Position targetPos = it->second;
                 const Position currentPos = positions[unitId];
-
-                Position nextPos = Spatial::getNextStep(currentPos, targetPos);
+                const Position nextPos = Spatial::getNextStep(currentPos, targetPos);
                 if (Spatial::isPassable(world, nextPos))
                 {
                     positions[unitId] = nextPos;

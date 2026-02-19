@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace sw::io
+namespace sw::features::events
 {
 	struct UnitAttacked
 	{

@@ -21,11 +21,14 @@ namespace sw::core
             world.getEvents().event(world.getTick(), events::UnitSpawned{id, type, pos.x, pos.y});
         }
 
-        static void destroy(World& world, uint32_t id)
+        template<typename F>
+        static void destroy(World& world, uint32_t id, F&& cleanup)
         {
-            if (world.positions.erase(id)) {
-                // Will add HP cleanup later here: world.health.erase(id);
-				world.getEvents().event(world.getTick(), events::UnitDied{id});
+            if (world.positions.erase(id))
+            {
+                world.targetPositions.erase(id);
+				cleanup(id);
+                world.getEvents().event(world.getTick(), events::UnitDied{id});
             }
         }
     };
