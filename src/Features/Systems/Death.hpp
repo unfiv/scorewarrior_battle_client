@@ -8,6 +8,8 @@
 #include "Features/Domain/Melee.hpp"
 #include "Features/Domain/RendingAbility.hpp"
 #include "Features/Domain/Ranged.hpp"
+#include "Features/Domain/PoisonAbility.hpp"
+#include "Features/Domain/Effects/EffectList.hpp"
 
 namespace sw::features::systems
 {
@@ -48,6 +50,8 @@ namespace sw::features::systems
                 world.getComponent<domain::Melee>().erase(targetId);
                 world.getComponent<domain::RendingAbility>().erase(targetId);
                 world.getComponent<domain::Ranged>().erase(targetId);
+                world.getComponent<domain::PoisonAbility>().erase(targetId);
+                world.getComponent<domain::effects::EffectList>().erase(targetId);
             });
         }
     };

@@ -10,7 +10,11 @@
 
 #include "Features/Domain/Health.hpp"
 #include "Features/Domain/Ranged.hpp"
-#include "Features/Events/UnitAttacked.hpp"
+#include "Features/Domain/PoisonAbility.hpp"
+#include "Features/Events/UnitAbilityUsed.hpp"
+#include "Features/Systems/Damage.hpp"
+#include "Features/Systems/Effects.hpp"
+#include "Features/Systems/Effects/PoisonEffect.hpp"
 
 namespace sw::features::systems
 {
@@ -75,11 +79,19 @@ namespace sw::features::systems
             world.restrictions.modify(attackerId, core::registry::restrictions::MOVE, 1);
             world.restrictions.modify(attackerId, core::registry::restrictions::ATTACK, 1);
 
-            auto& targetHealth = healthMap[targetId];
-            const auto damage = rangedMap[attackerId].agility;
-            targetHealth.hp = (targetHealth.hp > damage) ? (targetHealth.hp - damage) : 0;
+            static std::uniform_int_distribution<> chanceRoll(1, 1000);
 
-            world.getEvents().event(world.getTick(), events::UnitAttacked{attackerId, targetId, damage, targetHealth.hp});
+            auto& poisonAbilities = world.getComponent<domain::PoisonAbility>();
+            if (auto ability = poisonAbilities.find(attackerId); ability != poisonAbilities.end() &&
+                chanceRoll(gen) <= ability->second.chance)
+            {
+                Effects::addEffect(world, targetId, effects::PoisonEffect::create(attackerId, ability->second.poison));
+                world.getEvents().event(world.getTick(), events::UnitAbilityUsed{attackerId, "poison"});
+                return;
+            }
+
+            const auto damage = rangedMap[attackerId].agility;
+            Damage::apply(world, attackerId, targetId, damage);
         }
 
     private:

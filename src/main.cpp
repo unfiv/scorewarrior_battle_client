@@ -9,6 +9,7 @@
 
 #include "Features/Systems/RangedAttack.hpp"
 #include "Features/Systems/MeleeAttack.hpp"
+#include "Features/Systems/Effects.hpp"
 #include "Features/Systems/Death.hpp"
 
 #include <fstream>
@@ -41,6 +42,7 @@ int main(int argc, char** argv)
 	world.systems.push_back(sw::features::systems::RangedAttack::processUnit);
 	world.systems.push_back(sw::features::systems::MeleeAttack::processUnit);
 	world.systems.push_back(sw::core::systems::Movement::processUnit);
+	world.systems.push_back(sw::features::systems::Effects::update);
 	world.systems.push_back(sw::features::systems::Death::update);
 
 	parser.parse(file);
