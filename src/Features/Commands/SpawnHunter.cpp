@@ -1,14 +1,24 @@
 #include "SpawnHunter.hpp"
 
 #include "Core/World.hpp"
+#include "Core/UnitManager.hpp"
 #include "Core/IO/CommandParser.hpp"
 #include "Core/Commands/CommandRegistry.hpp"
+
+#include "Features/Domain/Health.hpp"
+#include "Features/Domain/Melee.hpp"
+#include "Features/Domain/Ranged.hpp"
 
 namespace sw::features::commands
 {
     void SpawnHunter::execute(core::World& world) const
     {
-        (void)world;
+        core::UnitManager::spawn(world, unitId, "hunter", {x, y}, [&]()
+        {
+            world.getComponent<domain::Health>()[unitId] = { hp };
+            world.getComponent<domain::Melee>()[unitId] = { strength };
+            world.getComponent<domain::Ranged>()[unitId] = { agility, range };
+        });
     }
 }
 
