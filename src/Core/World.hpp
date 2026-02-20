@@ -26,7 +26,7 @@ namespace sw::core
     class World
     {
     public:
-        explicit World(io::EventSystem& events) : eventSystem(eventSystem) {}
+        explicit World(io::EventSystem& events) : eventSystem(events) {}
 
         uint32_t getTick() const { return tick; }
         void nextTick();
