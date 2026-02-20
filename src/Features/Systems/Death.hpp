@@ -7,6 +7,7 @@
 #include "Features/Domain/Health.hpp"
 #include "Features/Domain/Melee.hpp"
 #include "Features/Domain/RendingAbility.hpp"
+#include "Features/Domain/Ranged.hpp"
 
 namespace sw::features::systems
 {
@@ -46,6 +47,7 @@ namespace sw::features::systems
                 world.getComponent<domain::Health>().erase(targetId);
                 world.getComponent<domain::Melee>().erase(targetId);
                 world.getComponent<domain::RendingAbility>().erase(targetId);
+                world.getComponent<domain::Ranged>().erase(targetId);
             });
         }
     };
