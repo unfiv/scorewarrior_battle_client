@@ -6,7 +6,8 @@
 #include "Core/Commands/CommandRegistry.hpp"
 
 #include "Features/Domain/Health.hpp"
-#include "Features/Domain/MeleeAttack.hpp"
+#include "Features/Domain/Melee.hpp"
+#include "Features/Domain/RendingAbility.hpp"
 
 namespace sw::features::commands
 {
@@ -15,7 +16,8 @@ namespace sw::features::commands
         core::UnitManager::spawn(world, unitId, "swordsman", {x, y}, [&]()
         {
             world.getComponent<domain::Health>()[unitId] = { hp };
-            world.getComponent<domain::MeleeAttack>()[unitId] = { strength, chance, rending };
+            world.getComponent<domain::Melee>()[unitId] = { strength };
+            world.getComponent<domain::RendingAbility>()[unitId] = { chance, rending };
         });
     }
 }

@@ -4,10 +4,8 @@
 
 namespace sw::features::domain
 {
-    struct MeleeAttack
-    { 
+    struct Melee
+    {
         uint32_t strength{};
-        uint32_t chance{};
-        uint32_t rending{};
     };
 }

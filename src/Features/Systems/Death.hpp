@@ -5,7 +5,8 @@
 #include "Core/World.hpp"
 #include "Core/UnitManager.hpp"
 #include "Features/Domain/Health.hpp"
-#include "Features/Domain/MeleeAttack.hpp"
+#include "Features/Domain/Melee.hpp"
+#include "Features/Domain/RendingAbility.hpp"
 
 namespace sw::features::systems
 {
@@ -43,7 +44,8 @@ namespace sw::features::systems
             core::UnitManager::destroy(world, id, [&](uint32_t targetId)
             {
                 world.getComponent<domain::Health>().erase(targetId);
-                world.getComponent<domain::MeleeAttack>().erase(targetId);
+                world.getComponent<domain::Melee>().erase(targetId);
+                world.getComponent<domain::RendingAbility>().erase(targetId);
             });
         }
     };

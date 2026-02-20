@@ -2,9 +2,11 @@
 
 #include <cstdint>
 
-namespace sw::io
+#include "Core/Commands/ICommand.hpp"
+
+namespace sw::features::commands
 {
-	struct SpawnHunter
+	struct SpawnHunter : public core::commands::ICommand
 	{
 		constexpr static const char* Name = "SPAWN_HUNTER";
 
@@ -17,6 +19,8 @@ namespace sw::io
 		uint32_t range{};
 		uint32_t chance{};
 		uint32_t poison{};
+
+		void execute(core::World& world) const override;
 
 		template <typename Visitor>
 		void visit(Visitor& visitor)
