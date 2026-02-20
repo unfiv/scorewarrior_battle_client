@@ -24,8 +24,6 @@ namespace sw::core::io
 			auto command = _commands.find(commandName);
 			if (command == _commands.end())
 			{
-				// TODO: add support for SPAWN_HUNTER
-				continue;
 				throw std::runtime_error("Unknown command: " + commandName);
 			}
 
