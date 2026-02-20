@@ -92,11 +92,12 @@ namespace sw::features::systems
             {
                 if (dis(gen) <= ability->second.chance)
                 {
+                    // Add poison effect which will deal total 'poison' damage over 5 ticks.
                     Effects::addEffect(world, targetId, effects::PoisonEffect::create(attackerId, ability->second.poison));
                     world.getEvents().event(world.getTick(), events::UnitAbilityUsed{attackerId, "poison"});
 
-                    // As poison substitutes the main damage of the attack
-                    damage = ability->second.poison / 5;
+                    // Poison substitutes the main ranged damage: do NOT apply immediate fractional damage here.
+                    damage = 0;
                 }
             }
 
@@ -104,7 +105,6 @@ namespace sw::features::systems
             {
                 Damage::apply(world, attackerId, targetId, damage);
             }
-            //Damage::apply(world, attackerId, targetId, ranged.agility);
         }
 
         static uint32_t chebyshevDistance(core::Position lhs, core::Position rhs)
