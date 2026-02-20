@@ -7,7 +7,8 @@
 #include "Core/Systems/Spatial.hpp"
 
 #include "Features/Domain/Health.hpp"
-#include "Features/Domain/MeleeAttack.hpp"
+#include "Features/Domain/Melee.hpp"
+#include "Features/Domain/RendingAbility.hpp"
 #include "Features/Events/UnitAttacked.hpp"
 #include "Features/Events/UnitAbilityUsed.hpp"
 #include "Core/Events/UnitDied.hpp"
@@ -21,11 +22,11 @@ namespace sw::features::systems {
         static void processUnit(core::World& world, uint32_t attackerId)
         {
             auto& healthMap = world.getComponent<Health>();
-            auto& attackMap = world.getComponent<MeleeAttack>();
+            auto& meleeMap = world.getComponent<Melee>();
 
             // Ensure attacker exists and is functional
             if (healthMap.find(attackerId) == healthMap.end() || 
-                attackMap.find(attackerId) == attackMap.end() || 
+                meleeMap.find(attackerId) == meleeMap.end() || 
                 healthMap[attackerId].hp == 0) {
                 return;
             }
@@ -64,11 +65,20 @@ namespace sw::features::systems {
             static std::mt19937 gen(rd());
             static std::uniform_int_distribution<> dis(1, 1000);
 
-            auto& attackerParams = world.getComponent<MeleeAttack>()[attackerId];
+            auto& attackerMelee = world.getComponent<Melee>()[attackerId];
+            auto& rendingAbilities = world.getComponent<RendingAbility>();
             auto& healthMap = world.getComponent<Health>();
-            
-            uint32_t damage = (dis(gen) <= attackerParams.chance) ? attackerParams.rending : attackerParams.strength;
-            bool isAbility = (damage == attackerParams.rending && attackerParams.rending != attackerParams.strength);
+
+            uint32_t damage = attackerMelee.strength;
+            bool isAbility = false;
+            if (auto ability = rendingAbilities.find(attackerId); ability != rendingAbilities.end())
+            {
+                if (dis(gen) <= ability->second.chance)
+                {
+                    damage = ability->second.rending;
+                    isAbility = (ability->second.rending != attackerMelee.strength);
+                }
+            }
 
             auto& targetHealth = healthMap[targetId];
             targetHealth.hp = (targetHealth.hp > damage) ? (targetHealth.hp - damage) : 0;
