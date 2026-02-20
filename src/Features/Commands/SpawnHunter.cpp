@@ -8,6 +8,7 @@
 #include "Features/Domain/Health.hpp"
 #include "Features/Domain/Melee.hpp"
 #include "Features/Domain/Ranged.hpp"
+#include "Features/Domain/PoisonAbility.hpp"
 
 namespace sw::features::commands
 {
@@ -18,6 +19,7 @@ namespace sw::features::commands
             world.getComponent<domain::Health>()[unitId] = { hp };
             world.getComponent<domain::Melee>()[unitId] = { strength };
             world.getComponent<domain::Ranged>()[unitId] = { agility, range };
+            world.getComponent<domain::PoisonAbility>()[unitId] = { chance, poison };
         });
     }
 }

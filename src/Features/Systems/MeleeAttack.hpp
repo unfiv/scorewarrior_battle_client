@@ -9,8 +9,10 @@
 #include "Features/Domain/Health.hpp"
 #include "Features/Domain/Melee.hpp"
 #include "Features/Domain/RendingAbility.hpp"
-#include "Features/Events/UnitAttacked.hpp"
 #include "Features/Events/UnitAbilityUsed.hpp"
+#include "Features/Systems/Damage.hpp"
+#include "Features/Systems/Effects.hpp"
+#include "Features/Systems/Effects/RendingEffect.hpp"
 
 namespace sw::features::systems
 {
@@ -71,29 +73,22 @@ namespace sw::features::systems
 
             auto& attackerMelee = world.getComponent<domain::Melee>()[attackerId];
             auto& rendingAbilities = world.getComponent<domain::RendingAbility>();
-            auto& healthMap = world.getComponent<domain::Health>();
 
             uint32_t damage = attackerMelee.strength;
-            bool isAbility = false;
+            bool usedRending = false;
             if (auto ability = rendingAbilities.find(attackerId); ability != rendingAbilities.end())
             {
                 if (dis(gen) <= ability->second.chance)
                 {
-                    damage = ability->second.rending;
-                    isAbility = (ability->second.rending != attackerMelee.strength);
+                    usedRending = true;
+                    Effects::addEffect(world, targetId, effects::RendingEffect::create(attackerId, ability->second.rending));
+                    world.getEvents().event(world.getTick(), events::UnitAbilityUsed{attackerId, "rending"});
                 }
             }
 
-            auto& targetHealth = healthMap[targetId];
-            targetHealth.hp = (targetHealth.hp > damage) ? (targetHealth.hp - damage) : 0;
-
-            if (isAbility)
+            if (!usedRending)
             {
-                world.getEvents().event(world.getTick(), events::UnitAbilityUsed{attackerId, "rending"});
-            }
-            else
-            {
-                world.getEvents().event(world.getTick(), events::UnitAttacked{attackerId, targetId, damage, targetHealth.hp});
+                Damage::apply(world, attackerId, targetId, damage);
             }
         }
     };
