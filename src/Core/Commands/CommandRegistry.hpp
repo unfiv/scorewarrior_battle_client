@@ -1,34 +1,30 @@
-﻿#pragma once
+#pragma once
+
 #include <functional>
 #include <vector>
 
-namespace sw::core
+namespace sw::core::io
 {
-    class World;
-
-    namespace io
-    {
-        class CommandParser;
-    }
+    class CommandParser;
 }
 
 namespace sw::core::commands
 {
-    using CommandSetupFn = std::function<void(World&, io::CommandParser&)>;
+    using CommandSetupFn = std::function<void(io::CommandParser&)>;
 
     class CommandRegistry
     {
     public:
         static void add(CommandSetupFn fn)
         {
-            getInitializers().push_back(fn);
+            getInitializers().push_back(std::move(fn));
         }
 
-        static void setupAll(World& world, sw::core::io::CommandParser& parser)
+        static void setupAll(sw::core::io::CommandParser& parser)
         {
             for (const auto& fn : getInitializers())
             {
-                fn(world, parser);
+                fn(parser);
             }
         }
 
