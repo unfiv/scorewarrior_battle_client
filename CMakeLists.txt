@@ -32,13 +32,15 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 enable_testing()
 
 foreach(scenario_index IN ITEMS 1 2 3 4)
-    add_test(
-            NAME integration.snapshot.scenario_${scenario_index}_determenistic
+    foreach(chance IN ITEMS 0 100)
+        add_test(
+            NAME integration.snapshot.scenario_${scenario_index}_chances_${chance}
             COMMAND ${CMAKE_COMMAND}
-            -DEXECUTABLE=$<TARGET_FILE:sw_battle_test>
-            -DSCENARIO=${CMAKE_SOURCE_DIR}/tests/integration/scenarios/scenario_${scenario_index}_determenistic.txt
-            -DEXPECTED=${CMAKE_SOURCE_DIR}/tests/integration/expected/scenario_${scenario_index}_determenistic.log
-            -P ${CMAKE_SOURCE_DIR}/tests/integration/cmake/AssertSnapshot.cmake
-    )
+                -DEXECUTABLE=$<TARGET_FILE:sw_battle_test>
+                -DSCENARIO=${CMAKE_SOURCE_DIR}/tests/integration/scenarios/scenario_${scenario_index}_chances_${chance}.txt
+                -DEXPECTED=${CMAKE_SOURCE_DIR}/tests/integration/expected/scenario_${scenario_index}_chances_${chance}.log
+                -P ${CMAKE_SOURCE_DIR}/tests/integration/cmake/AssertSnapshot.cmake
+        )
+    endforeach()
 endforeach()
 
