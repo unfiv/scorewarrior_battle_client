@@ -1,32 +1,28 @@
 #pragma once
 
-#include "Core/Commands/ICommand.hpp"
 #include "Visitors/CommandParserVisitor.hpp"
 
 #include <functional>
-#include <memory>
 #include <sstream>
 #include <string>
-#include <unordered_map>
-#include <vector>
 
 namespace sw::core::io
 {
 	class CommandParser
 	{
 	public:
-		template <class TCommand>
-		void add()
+		template <class TCommandData>
+		void add(std::function<void(TCommandData)> handler)
 		{
-			std::string commandName = TCommand::Name;
+			std::string commandName = TCommandData::Name;
 			auto [it, inserted] = _commands.emplace(
 					commandName,
-					[](std::istream& stream) -> std::unique_ptr<commands::ICommand>
+					[handler = std::move(handler)](std::istream& stream)
 					{
-						auto command = std::make_unique<TCommand>();
+						TCommandData data;
 						CommandParserVisitor visitor(stream);
-						command->visit(visitor);
-						return command;
+						data.visit(visitor);
+						handler(std::move(data));
 					});
 			if (!inserted)
 			{
@@ -34,9 +30,9 @@ namespace sw::core::io
 			}
 		}
 
-		std::vector<std::unique_ptr<commands::ICommand>> parse(std::istream& stream) const;
+		void parse(std::istream& stream);
 
 	private:
-		std::unordered_map<std::string, std::function<std::unique_ptr<commands::ICommand>(std::istream&)>> _commands;
+		std::unordered_map<std::string, std::function<void(std::istream&)>> _commands;
 	};
 }

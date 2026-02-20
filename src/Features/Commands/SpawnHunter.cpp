@@ -24,6 +24,8 @@ namespace sw::features::commands
     }
 }
 
-REGISTER_COMMAND([](sw::core::io::CommandParser& parser) {
-    parser.add<sw::features::commands::SpawnHunter>();
+REGISTER_COMMAND([](sw::core::World& world, sw::core::io::CommandParser& parser) {
+    parser.add<sw::features::commands::SpawnHunter>([&world](auto cmd) {
+        cmd.execute(world);
+    });
 })

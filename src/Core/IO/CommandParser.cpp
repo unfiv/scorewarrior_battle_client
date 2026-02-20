@@ -2,10 +2,8 @@
 
 namespace sw::core::io
 {
-	std::vector<std::unique_ptr<commands::ICommand>> CommandParser::parse(std::istream& stream) const
+	void CommandParser::parse(std::istream& stream)
 	{
-		std::vector<std::unique_ptr<commands::ICommand>> result;
-
 		std::string line;
 		while (std::getline(stream, line))
 		{
@@ -29,9 +27,7 @@ namespace sw::core::io
 				throw std::runtime_error("Unknown command: " + commandName);
 			}
 
-			result.push_back(command->second(commandStream));
+			command->second(commandStream);
 		}
-
-		return result;
 	}
 }
