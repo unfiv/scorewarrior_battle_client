@@ -6,20 +6,15 @@
 [1] UNIT_MOVED unitId=1 x=5 y=3 
 [1] UNIT_MOVED unitId=2 x=6 y=5 
 [2] UNIT_MOVED unitId=1 x=5 y=4 
-[2] UNIT_ATTACKED attackerUnitId=2 targetUnitId=1 damage=1 targetHp=9 
-[3] UNIT_ATTACKED attackerUnitId=1 targetUnitId=2 damage=1 targetHp=9 
-[3] UNIT_ATTACKED attackerUnitId=2 targetUnitId=1 damage=1 targetHp=8 
-[4] UNIT_ATTACKED attackerUnitId=1 targetUnitId=2 damage=1 targetHp=8 
-[4] UNIT_ATTACKED attackerUnitId=2 targetUnitId=1 damage=1 targetHp=7 
-[5] UNIT_ATTACKED attackerUnitId=1 targetUnitId=2 damage=1 targetHp=7 
-[5] UNIT_ATTACKED attackerUnitId=2 targetUnitId=1 damage=1 targetHp=6 
-[6] UNIT_ATTACKED attackerUnitId=1 targetUnitId=2 damage=1 targetHp=6 
-[6] UNIT_ATTACKED attackerUnitId=2 targetUnitId=1 damage=1 targetHp=5 
-[7] UNIT_ATTACKED attackerUnitId=1 targetUnitId=2 damage=1 targetHp=5 
-[7] UNIT_ABILITY_USED abilityUnitId=2 abilityName=rending 
-[7] UNIT_DIED unitId=1 
-[8] UNIT_MOVED unitId=2 x=5 y=5 
-[9] UNIT_MOVED unitId=2 x=4 y=5 
-[10] UNIT_MOVED unitId=2 x=3 y=5 
-[11] UNIT_MOVED unitId=2 x=2 y=5 
-[11] MARCH_ENDED unitId=2 x=2 y=5 
+[2] UNIT_ABILITY_USED abilityUnitId=2 abilityName=rending 
+[2] UNIT_ATTACKED attackerUnitId=2 targetUnitId=1 damage=5 targetHp=5 
+[3] UNIT_ABILITY_USED abilityUnitId=1 abilityName=rending 
+[3] UNIT_ATTACKED attackerUnitId=1 targetUnitId=2 damage=5 targetHp=5 
+[3] UNIT_ABILITY_USED abilityUnitId=2 abilityName=rending 
+[3] UNIT_ATTACKED attackerUnitId=2 targetUnitId=1 damage=5 targetHp=0 
+[3] UNIT_DIED unitId=1 
+[4] UNIT_MOVED unitId=2 x=5 y=5 
+[5] UNIT_MOVED unitId=2 x=4 y=5 
+[6] UNIT_MOVED unitId=2 x=3 y=5 
+[7] UNIT_MOVED unitId=2 x=2 y=5 
+[7] MARCH_ENDED unitId=2 x=2 y=5 

@@ -38,11 +38,12 @@ int main(int argc, char** argv)
 
 	sw::core::CommandDispatcher dispatcher(world, parser);
 
+	world.systems.push_back(sw::features::systems::Effects::processUnit);
 	world.systems.push_back(sw::features::systems::Death::processUnit);
 	world.systems.push_back(sw::features::systems::RangedAttack::processUnit);
 	world.systems.push_back(sw::features::systems::MeleeAttack::processUnit);
 	world.systems.push_back(sw::core::systems::Movement::processUnit);
-	world.systems.push_back(sw::features::systems::Effects::update);
+	//world.systems.push_back(sw::features::systems::Effects::update);
 	world.systems.push_back(sw::features::systems::Death::update);
 
 	parser.parse(file);

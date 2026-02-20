@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Core/World.hpp"
-
 #include "Features/Domain/Effects/EffectList.hpp"
 
 namespace sw::features::systems
@@ -9,32 +8,36 @@ namespace sw::features::systems
     class Effects
     {
     public:
-        static void update(core::World& world)
+        static void processUnit(core::World& world, uint32_t targetId)
         {
             auto& effectMap = world.getComponent<domain::effects::EffectList>();
-            for (auto& [unitId, effectList] : effectMap)
+            
+            // Take effect list for the current target, if it exists
+            auto itList = effectMap.find(targetId);
+            if (itList == effectMap.end()) return;
+
+            auto& effectList = itList->second;
+            auto it = effectList.active.begin();
+            
+            while (it != effectList.active.end())
             {
-                auto it = effectList.active.begin();
-                while (it != effectList.active.end())
+                if (it->applyFn)
                 {
-                    if (it->applyFn)
-                    {
-                        it->applyFn(world, unitId, *it);
-                    }
+                    it->applyFn(world, targetId, *it);
+                }
 
-                    if (it->remainingTicks > 0)
-                    {
-                        --it->remainingTicks;
-                    }
+                if (it->remainingTicks > 0)
+                {
+                    --it->remainingTicks;
+                }
 
-                    if (it->remainingTicks == 0)
-                    {
-                        it = effectList.active.erase(it);
-                    }
-                    else
-                    {
-                        ++it;
-                    }
+                if (it->remainingTicks == 0)
+                {
+                    it = effectList.active.erase(it);
+                }
+                else
+                {
+                    ++it;
                 }
             }
         }

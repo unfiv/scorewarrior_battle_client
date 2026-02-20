@@ -75,21 +75,17 @@ namespace sw::features::systems
             auto& rendingAbilities = world.getComponent<domain::RendingAbility>();
 
             uint32_t damage = attackerMelee.strength;
-            bool usedRending = false;
             if (auto ability = rendingAbilities.find(attackerId); ability != rendingAbilities.end())
             {
                 if (dis(gen) <= ability->second.chance)
                 {
-                    usedRending = true;
-                    Effects::addEffect(world, targetId, effects::RendingEffect::create(attackerId, ability->second.rending));
+                    damage = ability->second.rending;
+                    Effects::addEffect(world, targetId, effects::RendingEffect::create(attackerId, 0));
                     world.getEvents().event(world.getTick(), events::UnitAbilityUsed{attackerId, "rending"});
                 }
             }
 
-            if (!usedRending)
-            {
-                Damage::apply(world, attackerId, targetId, damage);
-            }
+            Damage::apply(world, attackerId, targetId, damage);
         }
     };
 }

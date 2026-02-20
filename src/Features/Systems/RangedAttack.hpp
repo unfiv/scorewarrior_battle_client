@@ -7,7 +7,6 @@
 
 #include "Core/World.hpp"
 #include "Core/Systems/Spatial.hpp"
-
 #include "Features/Domain/Health.hpp"
 #include "Features/Domain/Ranged.hpp"
 #include "Features/Domain/PoisonAbility.hpp"
@@ -40,27 +39,24 @@ namespace sw::features::systems
 
             auto attackerPos = world.positions[attackerId];
 
-            if (hasAdjacentUnits(world, attackerId, attackerPos))
+            std::vector<uint32_t> neighbors;
+            core::systems::Spatial::findTargets(world, attackerId, attackerPos, neighbors);
+            for (uint32_t id : neighbors)
             {
-                return;
+                if (healthMap.count(id) && healthMap[id].hp > 0)
+                {
+                    return;
+                }
             }
 
             std::vector<uint32_t> targets;
             for (const auto& [targetId, targetPos] : world.positions)
             {
-                if (targetId == attackerId)
-                {
-                    continue;
-                }
+                if (targetId == attackerId) continue;
+                if (!healthMap.count(targetId) || healthMap[targetId].hp == 0) continue;
 
-                auto targetHealth = healthMap.find(targetId);
-                if (targetHealth == healthMap.end() || targetHealth->second.hp == 0)
-                {
-                    continue;
-                }
-
-                uint32_t distance = chebyshevDistance(attackerPos, targetPos);
-                if (distance >= 2 && distance <= rangedMap[attackerId].range)
+                uint32_t dist = chebyshevDistance(attackerPos, targetPos);
+                if (dist >= 2 && dist <= rangedMap[attackerId].range)
                 {
                     targets.push_back(targetId);
                 }
@@ -78,39 +74,44 @@ namespace sw::features::systems
 
             world.restrictions.modify(attackerId, core::registry::restrictions::MOVE, 1);
             world.restrictions.modify(attackerId, core::registry::restrictions::ATTACK, 1);
-
-            static std::uniform_int_distribution<> chanceRoll(1, 1000);
-
-            auto& poisonAbilities = world.getComponent<domain::PoisonAbility>();
-            if (auto ability = poisonAbilities.find(attackerId); ability != poisonAbilities.end() &&
-                chanceRoll(gen) <= ability->second.chance)
-            {
-                Effects::addEffect(world, targetId, effects::PoisonEffect::create(attackerId, ability->second.poison));
-                world.getEvents().event(world.getTick(), events::UnitAbilityUsed{attackerId, "poison"});
-                return;
-            }
-
-            const auto damage = rangedMap[attackerId].agility;
-            Damage::apply(world, attackerId, targetId, damage);
+            executeAttack(world, attackerId, targetId);
         }
 
     private:
+        static void executeAttack(core::World& world, uint32_t attackerId, uint32_t targetId)
+        {
+            static std::random_device rd;
+            static std::mt19937 gen(rd());
+            static std::uniform_int_distribution<> dis(1, 1000);
+
+            auto& ranged = world.getComponent<domain::Ranged>()[attackerId];
+            auto& poisonAbilities = world.getComponent<domain::PoisonAbility>();
+
+            uint32_t damage = ranged.agility;
+            if (auto ability = poisonAbilities.find(attackerId); ability != poisonAbilities.end())
+            {
+                if (dis(gen) <= ability->second.chance)
+                {
+                    Effects::addEffect(world, targetId, effects::PoisonEffect::create(attackerId, ability->second.poison));
+                    world.getEvents().event(world.getTick(), events::UnitAbilityUsed{attackerId, "poison"});
+
+                    // As poison substitutes the main damage of the attack
+                    damage = ability->second.poison / 5;
+                }
+            }
+
+            if (damage > 0)
+            {
+                Damage::apply(world, attackerId, targetId, damage);
+            }
+            //Damage::apply(world, attackerId, targetId, ranged.agility);
+        }
+
         static uint32_t chebyshevDistance(core::Position lhs, core::Position rhs)
         {
             auto dx = std::abs(static_cast<int>(lhs.x) - static_cast<int>(rhs.x));
             auto dy = std::abs(static_cast<int>(lhs.y) - static_cast<int>(rhs.y));
             return static_cast<uint32_t>(std::max(dx, dy));
-        }
-
-        static bool hasAdjacentUnits(core::World& world, uint32_t attackerId, core::Position attackerPos)
-        {
-            auto& healthMap = world.getComponent<domain::Health>();
-            std::vector<uint32_t> adjacent;
-            core::systems::Spatial::findTargets(world, attackerId, attackerPos, adjacent);
-            return std::any_of(adjacent.begin(), adjacent.end(), [&](uint32_t targetId)
-            {
-                return healthMap.count(targetId) && healthMap[targetId].hp > 0;
-            });
         }
     };
 }

@@ -20,8 +20,7 @@ namespace sw::features::systems::effects
 
         static void apply(core::World& world, uint32_t targetId, domain::effects::ActiveEffect& effect)
         {
-            auto& data = std::any_cast<domain::effects::RendingEffectData&>(effect.data);
-            Damage::apply(world, effect.sourceUnitId, targetId, data.damage);
+            // Just an effect, real damage is done during attack
         }
     };
 }
